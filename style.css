@@ -1,0 +1,154 @@
+body {
+	background-color: lightgray;
+	font-family: Arial;
+}
+
+/* --------------------------- UI Container --------------------------- */
+.ui_container {
+	margin: 0 auto;
+	width: 90%;
+	height: 98vh;
+}
+
+.ui_box {
+	display: grid;
+	width: 100%;
+	height: calc(100% - 8px);
+	border: 4px solid black;
+
+	grid-template-areas: 'stats sitemap sitemap'
+	'stats store expenses';
+	grid-template-columns: 1fr 2fr 1fr;
+	grid-template-rows: 1.2fr 1fr;
+}
+
+.ui_box * {
+	/* border: 1px solid red; */
+}
+
+.ui_box > * {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+	border: 1.5px solid black;
+	text-align: center;
+}
+
+/* --------------------------- Status Panel --------------------------- */
+.stats {
+	/* background-color: lightblue; */
+	text-align: left;
+
+	grid-area: stats;
+}
+
+.storage-graph {
+	margin: 0 auto;
+	width: 90%;
+}
+
+/* --------------------------- Site Panel --------------------------- */
+.sitemap {
+	display: flex;
+	flex-direction: column;
+
+	grid-area: sitemap;
+}
+
+/* --------------------------- Site Boxes --------------------------- */
+.site_box_container {
+	display: grid;
+	margin: auto auto;
+	width: 100%;
+	height: 100%;
+
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+}
+
+.site_box {
+	margin: 20px auto;
+	width: 80%;
+	height: max-content;
+	transition: 200ms ease-out;
+}
+
+.site_box.off {
+	display: none;
+}
+
+.site_box.up .site_box_title {
+	background-color: green;
+	color: white;
+}
+
+.site_box.down .site_box_title {
+	background-color: red;
+	color: white;
+}
+
+.site_box * {
+	padding: 10px;
+}
+
+.site_box_content {
+	margin: auto auto;
+}
+
+.site_box_title {
+	margin: auto auto;
+	font-weight: 900;
+
+	grid-area: title;
+}
+
+.site_box_stats {
+	padding: 0;
+	height: 0;
+	opacity: 0;
+}
+
+.site_box:hover .site_box_stats {
+	height: max-content;
+	opacity: 1;
+	transition: 200ms ease-out;
+}
+
+/* --------------------------- Store Panel --------------------------- */
+.store {
+	grid-area: store;
+}
+
+.item_row {
+	display: flex;
+	flex-direction: row;
+	padding: 4px;
+	margin: 4px;
+	background-color: white;
+}
+
+.item_row_name {
+	margin: auto auto;
+}
+
+.item_row_content_container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	width: 100%;
+}
+
+.item_row_content {
+	background-color: rgb(47, 127, 192);
+	color: white;
+	width: 70px;
+	padding: 6px;
+	border-radius: 8px;
+}
+
+/* --------------------------- Expenses Panel --------------------------- */
+.expenses {
+	grid-area: expenses;
+}
+
+
