@@ -1,5 +1,7 @@
+/* Dark Grey Color: #28262C */
+
 body {
-	background-color: lightgray;
+	background-color: rgb(255, 245, 217);
 	font-family: Arial;
 }
 
@@ -22,9 +24,9 @@ body {
 	grid-template-rows: 1.2fr 1fr;
 }
 
-.ui_box * {
-	/* border: 1px solid red; */
-}
+/* .ui_box * {
+	border: 1px solid red;
+} */
 
 .ui_box > * {
 	display: flex;
@@ -36,6 +38,7 @@ body {
 
 /* --------------------------- Status Panel --------------------------- */
 .stats {
+	background-color: white;
 	/* background-color: lightblue; */
 	text-align: left;
 
@@ -51,6 +54,7 @@ body {
 .sitemap {
 	display: flex;
 	flex-direction: column;
+	background-color: white;
 
 	grid-area: sitemap;
 }
@@ -78,12 +82,12 @@ body {
 }
 
 .site_box.up .site_box_title {
-	background-color: green;
+	background-color: rgb(5, 180, 5);
 	color: white;
 }
 
 .site_box.down .site_box_title {
-	background-color: red;
+	background-color: rgb(255, 0, 0);
 	color: white;
 }
 
@@ -103,9 +107,13 @@ body {
 }
 
 .site_box_stats {
-	padding: 0;
+	padding-top: 4px;
 	height: 0;
 	opacity: 0;
+}
+
+.site_box:hover {
+	cursor: default;
 }
 
 .site_box:hover .site_box_stats {
@@ -116,16 +124,58 @@ body {
 
 /* --------------------------- Store Panel --------------------------- */
 .store {
+	background-color: white;
+
 	grid-area: store;
 }
 
+/* --------------------------- Store Tabs --------------------------- */
+.tabs_container {
+	border: 1px solid black;
+}
+
+.tab_set {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	border: 1px solid black;
+}
+
+.tab_title {
+	padding: 10px;
+	border-right: 1px solid black;
+	cursor: pointer;
+}
+
+.tab.active .tab_title {
+	background-color: #3284ff;
+	color: white;
+}
+
+.tab_title:hover {
+	background-color: rgb(119, 119, 119);
+	color: white;
+}
+
+.tab_box .tab_content {
+	display: none;
+}
+
+.tab_box {
+	padding: 6px;
+	padding-top: 0;
+	border: 1px solid black;
+}
+
+/* --------------------------- Store Table --------------------------- */
 .item_row {
 	display: flex;
 	flex-direction: row;
-	padding: 4px;
 	margin: 4px;
+	padding: 6px;
 	border: 1px solid black;
-	border-radius: 4px;
+
+/* border-radius: 4px; */
 	background-color: white;
 }
 
@@ -142,20 +192,22 @@ body {
 }
 
 .item_row_content {
-	background-color: rgb(47, 127, 192);
-	color: white;
-	width: 70px;
 	padding: 6px;
-	border-radius: 8px;
+	width: 70px;
+	background-color: #3284ff;
+	color: white;
+	/* border-radius: 8px; */
 }
 
 .item_row_content:hover {
+	background-color: #044389;
 	cursor: pointer;
-	background-color: rgb(119, 162, 197);
 }
 
 /* --------------------------- Expenses Panel --------------------------- */
 .expenses {
+	background-color: white;
+
 	grid-area: expenses;
 }
 
