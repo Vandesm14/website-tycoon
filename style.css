@@ -137,8 +137,8 @@ body {
 .tab_set {
 	display: flex;
 	flex-direction: row;
-	width: 100%;
-	border: 1px solid black;
+	/* width: 100%; */
+	border-bottom: 1px solid black;
 }
 
 .tab_title {
@@ -164,7 +164,7 @@ body {
 .tab_box {
 	padding: 6px;
 	padding-top: 0;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 }
 
 /* --------------------------- Store Table --------------------------- */
@@ -200,6 +200,26 @@ body {
 }
 
 .item_row_content:hover {
+	background-color: #044389;
+	cursor: pointer;
+}
+
+.item_row_hover_content_container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	width: 100%;
+}
+
+.item_row_hover_content {
+	padding: 6px;
+	width: 70px;
+	background-color: #3284ff;
+	color: white;
+	/* border-radius: 8px; */
+}
+
+.item_row_hover_content:hover {
 	background-color: #044389;
 	cursor: pointer;
 }
