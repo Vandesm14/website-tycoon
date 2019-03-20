@@ -20,13 +20,13 @@ body {
 
 	grid-template-areas: 'stats sitemap sitemap'
 	'stats store expenses';
-	grid-template-columns: 1fr 2fr 1fr;
+	grid-template-columns: 1fr 2.5fr 1.2fr;
 	grid-template-rows: 1.2fr 1fr;
 }
 
-/* .ui_box * {
-	border: 1px solid red;
-} */
+.ui_box * {
+	outline: 1px solid red !important;
+}
 
 .ui_box > * {
 	display: flex;
@@ -39,7 +39,8 @@ body {
 /* --------------------------- Status Panel --------------------------- */
 .stats {
 	background-color: white;
-	/* background-color: lightblue; */
+
+/* background-color: lightblue; */
 	text-align: left;
 
 	grid-area: stats;
@@ -74,10 +75,14 @@ body {
 	margin: 20px auto;
 	width: 80%;
 	height: max-content;
-	transition: 200ms ease-out;
 }
 
-.site_box.off {
+.site_box.off .site_box_title {
+	background-color: #ebebeb;
+	color: #888;
+}
+
+.site_box.off .site_box_stats {
 	display: none;
 }
 
@@ -110,6 +115,7 @@ body {
 	padding-top: 4px;
 	height: 0;
 	opacity: 0;
+	transition: 200ms ease-out;
 }
 
 .site_box:hover {
@@ -119,7 +125,6 @@ body {
 .site_box:hover .site_box_stats {
 	height: max-content;
 	opacity: 1;
-	transition: 200ms ease-out;
 }
 
 /* --------------------------- Store Panel --------------------------- */
@@ -137,7 +142,8 @@ body {
 .tab_set {
 	display: flex;
 	flex-direction: row;
-	/* width: 100%; */
+
+/* width: 100%; */
 	border-bottom: 1px solid black;
 }
 
@@ -194,9 +200,12 @@ body {
 .item_row_content {
 	padding: 6px;
 	width: 70px;
+
+/* border-radius: 8px; */
+	border: none;
 	background-color: #3284ff;
 	color: white;
-	/* border-radius: 8px; */
+	font-size: 14px;
 }
 
 .item_row_content:hover {
@@ -204,24 +213,12 @@ body {
 	cursor: pointer;
 }
 
-.item_row_hover_content_container {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	width: 100%;
+.item_row_content.disabled {
+	background-color: #7c7c7c;
 }
 
-.item_row_hover_content {
-	padding: 6px;
-	width: 70px;
-	background-color: #3284ff;
-	color: white;
-	/* border-radius: 8px; */
-}
-
-.item_row_hover_content:hover {
-	background-color: #044389;
-	cursor: pointer;
+.item_row_content.disabled:hover {
+	cursor: not-allowed;
 }
 
 /* --------------------------- Expenses Panel --------------------------- */
@@ -230,5 +227,3 @@ body {
 
 	grid-area: expenses;
 }
-
-
