@@ -25,7 +25,7 @@ body {
 }
 
 .ui_box * {
-	outline: 1px solid red !important;
+	/* outline: 1px solid red !important; */
 }
 
 .ui_box > * {
@@ -39,8 +39,6 @@ body {
 /* --------------------------- Status Panel --------------------------- */
 .stats {
 	background-color: white;
-
-/* background-color: lightblue; */
 	text-align: left;
 
 	grid-area: stats;
@@ -77,9 +75,9 @@ body {
 	height: max-content;
 }
 
-.site_box.off .site_box_title {
+.site_box.off .site_box_title{
 	background-color: #ebebeb;
-	color: #888;
+	color: #888888;
 }
 
 .site_box.off .site_box_stats {
@@ -142,8 +140,7 @@ body {
 .tab_set {
 	display: flex;
 	flex-direction: row;
-
-/* width: 100%; */
+	/* width: 100%; */
 	border-bottom: 1px solid black;
 }
 
@@ -170,7 +167,6 @@ body {
 .tab_box {
 	padding: 6px;
 	padding-top: 0;
-	/* border: 1px solid black; */
 }
 
 /* --------------------------- Store Table --------------------------- */
@@ -181,7 +177,6 @@ body {
 	padding: 6px;
 	border: 1px solid black;
 
-/* border-radius: 4px; */
 	background-color: white;
 }
 
@@ -200,11 +195,9 @@ body {
 .item_row_content {
 	padding: 6px;
 	width: 70px;
-
-/* border-radius: 8px; */
-	border: none;
 	background-color: #3284ff;
 	color: white;
+	border: none;
 	font-size: 14px;
 }
 
@@ -226,4 +219,16 @@ body {
 	background-color: white;
 
 	grid-area: expenses;
+}
+
+#electricityBill::before {
+	content: 'Electricity Bill: $';
+}
+
+#networkBill::before {
+	content: 'Network Bill: $';
+}
+
+#propertyBill::before {
+	content: 'Property Bill: $';
 }
