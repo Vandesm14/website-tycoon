@@ -44,10 +44,14 @@ body {
 	grid-area: stats;
 }
 
-.storage-graph {
+#wallet::before {
+	content: 'Wallet: $';
+}
+
+/* .storage-graph {
 	margin: 0 auto;
 	width: 90%;
-}
+} */
 
 /* --------------------------- Site Panel --------------------------- */
 .sitemap {
@@ -132,6 +136,10 @@ body {
 	grid-area: store;
 }
 
+.store_selector {
+	width: 20%;
+}
+
 /* --------------------------- Store Tabs --------------------------- */
 .tabs_container {
 	border: 1px solid black;
@@ -182,7 +190,7 @@ body {
 
 .item_row_name {
 	margin: auto auto;
-	width: 10%;
+	width: calc(max-content + 6px);
 }
 
 .item_row_content_container {

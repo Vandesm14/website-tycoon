@@ -12,27 +12,27 @@
 	<div class="ui_container">
 		<div class="ui_box">
 			<div class="stats">
-				Wallet: $8,567.02
-				<img src="images/storage-graph.png" class="storage-graph">
+				<p id="wallet">0</p>
+				<!-- <img src="images/storage-graph.png" class="storage-graph"> -->
 			</div>
 			<div class="sitemap">
 				Sitemap
 				<div class="site_box_container">
-					<div class="site_box up">
+					<div class="site_box off">
 						<div class="site_box_title">Server 1</div>
 						<div class="site_box_stats">
 							Storage: 4TB<br>
 							Power: 150kWh
 						</div>
 					</div>
-					<div class="site_box up">
+					<div class="site_box off">
 						<div class="site_box_title">Server 2</div>
 						<div class="site_box_stats">
 							Storage: 4TB<br>
 							Power: 150kWh
 						</div>
 					</div>
-					<div class="site_box down">
+					<div class="site_box off">
 						<div class="site_box_title">Server 3</div>
 						<div class="site_box_stats">
 							Storage: 4TB<br>
@@ -93,13 +93,19 @@
 			</div>
 			<div class="store">
 				Store
+				<select class="store_selector" id="facilitySelector">
+					<option disabled selected>Select a Facility</option>
+				</select>
+				<select class="store_selector" id="serverSelector">
+					<option disabled selected>Select a Server</option>
+				</select>
 				<div class="tabs_container">
 					<div class="tab_set">
-						<div class="tab active">
-							<div class="tab_title" data-tabidp="Tab-1" data-tabfirst>Hardware</div>
-						</div>
 						<div class="tab">
-							<div class="tab_title" data-tabidp="Tab-2">Servers</div>
+							<div class="tab_title" data-tabidp="Tab-1">Hardware</div>
+						</div>
+						<div class="tab active">
+							<div class="tab_title" data-tabidp="Tab-2" data-tabfirst>Servers</div>
 						</div>
 						<div class="tab">
 							<div class="tab_title" data-tabidp="Tab-3">Facilities</div>
@@ -109,9 +115,9 @@
 						</div>
 					</div>
 					<div class="tab_box">
-						<div class="tab_content" data-tabid="Tab-1">
+						<div class="tab_content" data-tabid="Tab-1" data-tabname="Hardware">
 							<div class="store_container">
-								<div class="item_row">
+								<div class="item_row" data-rowname="HDD">
 									<div class="item_row_name">HDD</div>
 									<div class="item_row_content_container">
 										<button class="item_row_content">1TB</button>
@@ -120,7 +126,7 @@
 										<button class="item_row_content disabled">8TB</button>
 									</div>
 								</div>
-								<div class="item_row">
+								<div class="item_row" data-rowname="SSD">
 									<div class="item_row_name">SSD</div>
 									<div class="item_row_content_container">
 										<button class="item_row_content">1TB</button>
@@ -129,7 +135,7 @@
 										<button class="item_row_content disabled">8TB</button>
 									</div>
 								</div>
-								<div class="item_row">
+								<div class="item_row" data-rowname="CPU">
 									<div class="item_row_name">CPU</div>
 									<div class="item_row_content_container">
 										<button class="item_row_content">1 Core</button>
@@ -140,13 +146,23 @@
 								</div>
 							</div>
 						</div>
-						<div class="tab_content" data-tabid="Tab-2">
-							<h1>Tab 2</h1>
+						<div class="tab_content" data-tabid="Tab-2" data-tabname="Servers">
+							<div class="store_container">
+								<div class="item_row" data-rowname="Motherboard">
+									<div class="item_row_name">Motherboard</div>
+									<div class="item_row_content_container">
+										<button class="item_row_content">1 Port</button>
+										<button class="item_row_content">2 Port</button>
+										<button class="item_row_content disabled">4 Port</button>
+										<button class="item_row_content disabled">8 Port</button>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="tab_content" data-tabid="Tab-3">
+						<div class="tab_content" data-tabid="Tab-3" data-tabname="Facilities">
 							<h1>Tab 3</h1>
 						</div>
-						<div class="tab_content" data-tabid="Tab-4">
+						<div class="tab_content" data-tabid="Tab-4" data-tabname="Ads">
 							<h1>Tab 4</h1>
 						</div>
 					</div>
