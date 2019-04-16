@@ -85,32 +85,29 @@ $(document).ready(function () {
 		if (!$(this).hasClass('disabled')) {
 			var fIndex = $('#facilitySelector').val(); // Facility Index
 			var sIndex = $('#serverSelector').val(); // Server Index
-			console.log('Tab: ' + $(this).closest('.tab_content').data('tabname'));
-			console.log('Row: ' + $(this).closest('.item_row').data('rowname'));
-			console.log('Level: ' + ($(this).index() + 1));
-			switch($(this).closest('.tab_content').data('tabname')) {
+			var rowname = $(this).closest('.item_row').data('rowname').toLowerCase();
+			var selector = facilities[fIndex].servers[sIndex][rowname];
+			// console.log('Tab: ' + $(this).closest('.tab_content').data('tabname'));
+			// console.log('Row: ' + $(this).closest('.item_row').data('rowname'));
+			// console.log('Level: ' + ($(this).index() + 1));
+
+			switch ($(this).closest('.tab_content').data('tabname')) {
 				case 'Hardware':
-					switch ($(this).closest('.item_row').data('rowname')) {
-						case 'HDD':
-							if (facilities[fIndex].servers[sIndex].hdd === undefined) {
-								facilities[fIndex].servers[sIndex].hdd = $(this).index();
-							} else {
-								if (confirm(`Are you sure you want to replace the ${$(this).closest('.item_row').data('rowname')} of Server ${} from Facility ${}?`))
-							}
-							break;
-						case 'SSD':
-							
-							break;
-						case 'CPU':
-							
-							break;
+					if (selector === undefined) {
+						// selector = $(this).index();
+						// Add new component
+					} else {
+						confirmAsync(`Replace ${rowname} in Server ${sIndex} of Facility ${fIndex}?`, function () {
+							// selector = $(this).index();
+							// Replace existing component
+						});
 					}
 					break;
 				case 'Servers':
-					
+
 					break;
 				case 'Facilities':
-					
+
 					break;
 				case 'Ads':
 
@@ -122,7 +119,7 @@ $(document).ready(function () {
 
 /* --------------------------- Sequences --------------------------- */
 function startSequence() {
-	// alert('You have currently have no servers. To get one, pick a motherboard below');
+	// alert('You currently have no servers. To get one, pick a motherboard below');
 }
 
 function mainSequence() {
@@ -150,6 +147,7 @@ function computePower() {
 	// Run though all facilities + servers and gather total power expense
 	var power = facilities[i].power + servers[i].power;
 	// post the power to website
+	document.getElementById('electricityBill').textContent /* or .innerHTML? */ = power + '%';
 }
 
 function computeNetwork() {
@@ -165,12 +163,13 @@ function newFacility() {
 	facilities.push(cloneObj(facilityTemplate));
 }
 
-function newServer(i) {
-	facilities[i].servers.push(cloneObj(serverTemplate));
+function newServer(f) {
+	facilities[f].servers.push(cloneObj(serverTemplate));
 }
 
-function newComponent(i, k, comp) {
-	facilities[i].servers[k].components.push(cloneObj(componentTemplate[comp]));
+function newComponent(f, s, comp) {
+	facilities[f].servers[s].components.push(cloneObj(componentTemplate[comp]));
+
 }
 
 function newPage() {
@@ -184,4 +183,15 @@ function newAd() {
 /* --------------------------- Helper Functions --------------------------- */
 function cloneObj(obj) {
 	return JSON.parse(JSON.stringify(obj));
+}
+
+function confirmAsync(a, b, c) {
+	var e = confirm(a);
+	if (e) {
+		b(e);
+	} else {
+		if (c !== undefined) {
+			c(e);
+		}
+	}
 }
