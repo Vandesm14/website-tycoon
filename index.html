@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<audio id="music" src="loop.mp3" loop autoplay volume="0.1"></audio>
+	<audio id="music" src="loop.mp3" loop volume="0.1"></audio>
 	<div class="ui_container">
 		<div class="ui_box">
 			<div class="stats">
@@ -126,8 +126,8 @@
 			<div class="store">
 				Store
 				<div>
-					Facility:
-					<select class="store_selector" id="facilitySelector">
+					<!-- Facility: -->
+					<select class="store_selector" id="facilitySelector" style="display: none">
 						<option disabled>Select a Facility</option>
 						<option selected>1</option>
 					</select>
@@ -154,9 +154,9 @@
 						<div class="tab">
 							<div class="tab_title" data-tabidp="Tab-2">Servers</div>
 						</div>
-						<div class="tab">
+						<!-- <div class="tab">
 							<div class="tab_title" data-tabidp="Tab-3">Facilities</div>
-						</div>
+						</div> -->
 						<div class="tab">
 							<div class="tab_title" data-tabidp="Tab-4">Ads</div>
 						</div>
@@ -210,7 +210,17 @@
 							<h1>Tab 3</h1>
 						</div>
 						<div class="tab_content" data-tabid="Tab-4" data-tabname="Ads">
-							<h1>Tab 4</h1>
+							<div class="store_container">
+								<div class="item_row" data-rowname="Ads">
+									<div class="item_row_name">Ads</div>
+									<div class="item_row_content_container">
+										<button class="item_row_content">+1K<br>$50</button>
+										<button class="item_row_content">+2K<br>$70</button>
+										<button class="item_row_content">+4K<br>$130</button>
+										<button class="item_row_content">+8K<br>$230</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -219,7 +229,7 @@
 				<b>Expenses</b><br>
 				<p id="electricityBill">0</p>
 				<p id="networkBill">0</p>
-				<p id="propertyBill">0</p>
+				<!-- <p id="propertyBill">0</p> -->
 			</div>
 		</div>
 	</div>

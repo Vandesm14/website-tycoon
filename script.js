@@ -114,71 +114,72 @@ $(document).ready(function () {
 
 	/* -------- Custom Store -------- */
 	$('.item_row_content').on('click', function () {
-		if (!$(this).hasClass('disabled')) {
-			var fIndex = parseInt($('#facilitySelector').val()) - 1; // Facility Index
-			var sIndex = parseInt($('#serverSelector').val()) - 1; // Server Index
-			var rowname = $(this).closest('.item_row').data('rowname').toLowerCase();
-			var selector = facilities[fIndex].servers[sIndex].components[rowname];
-			var level = $(this).index();
-			var hold;
-			// console.log('Tab: ' + $(this).closest('.tab_content').data('tabname'));
-			// console.log('Row: ' + $(this).closest('.item_row').data('rowname'));
-			// console.log('Level: ' + ($(this).index() + 1));
-
-			switch ($(this).closest('.tab_content').data('tabname')) {
-				case 'Hardware':
-					var item = componentTemplate[rowname];
-					if (checkCost(componentTemplate[rowname].cost(level))) { // If cost <= wallet
-						if (typeof facilities[fIndex] === 'undefined' || null) { // If facility not exist
-							alert('No Facility Selected!');
-						} else {
-							if (typeof facilities[fIndex].servers[sIndex] === 'undefined' || null) { // If server not exist
-								alert('No Servers Attached to Facility!');
-							} else {
-								if (facilities[fIndex].servers[sIndex][rowname] !== 'undefined' || null) { // If component not exist
-									confirmAsync(`Replace ${rowname} in Server ${sIndex + 1} of Facility ${fIndex + 1}?`, function () {
-										facilities[fIndex].servers[sIndex].components[rowname] = level;
-										stats.wallet -= componentTemplate[rowname].cost(level);
-									});
-								} else {
-									facilities[fIndex].servers[sIndex].components[rowname] = level;
-									stats.wallet -= componentTemplate[rowname].cost(level);
-								}
-							}
-						}
-					} else {
-						alert('Not enough cash to buy component!');
-					}
-					break;
-				case 'Servers':
-					var item = componentTemplate.motherboard;
-					if (checkCost(componentTemplate.motherboard.cost(level))) { // If cost <= wallet
-						if (typeof facilities[fIndex] === 'undefined' || null) { // If facility not exist
-							alert('No Facility Selected!');
-						} else {
-							hold = cloneObj(serverTemplate);
-							hold.components.motherboard = level;
-							facilities[fIndex].servers.push(hold);
-							stats.wallet -= componentTemplate.motherboard.cost(level);
-						}
-					} else {
-						alert('Not enough cash to buy server!');
-					}
-					break;
-				case 'Facilities':
-
-					break;
-				case 'Ads':
-
-					break;
-			}
-		}
+		clickRowContent(this);
 	});
 });
 
 /* --------------------------- Sequences --------------------------- */
 function startSequence() {
 	// Run DOM functions to update values & stats
+}
+
+function clickRowContent(e) {
+	if (!$(e).hasClass('disabled')) {
+		var fIndex = parseInt($('#facilitySelector').val()) - 1; // Facility Index
+		var sIndex = parseInt($('#serverSelector').val()) - 1; // Server Index
+		var rowname = $(e).closest('.item_row').data('rowname').toLowerCase();
+		var selector = facilities[fIndex].servers[sIndex].components[rowname];
+		var level = $(e).index();
+		var hold;
+	
+		switch ($(e).closest('.tab_content').data('tabname')) {
+			case 'Hardware':
+				var item = componentTemplate[rowname];
+				if (checkCost(componentTemplate[rowname].cost(level))) { // If cost <= wallet
+					if (typeof facilities[fIndex] === 'undefined' || null) { // If facility not exist
+						alert('No Facility Selected!');
+					} else {
+						if (typeof facilities[fIndex].servers[sIndex] === 'undefined' || null) { // If server not exist
+							alert('No Servers Attached to Facility!');
+						} else {
+							if (facilities[fIndex].servers[sIndex][rowname] !== 'undefined' || null) { // If component not exist
+								confirmAsync(`Replace ${rowname} in Server ${sIndex + 1} of Facility ${fIndex + 1}?`, function () {
+									facilities[fIndex].servers[sIndex].components[rowname] = level;
+									stats.wallet -= componentTemplate[rowname].cost(level);
+								});
+							} else {
+								facilities[fIndex].servers[sIndex].components[rowname] = level;
+								stats.wallet -= componentTemplate[rowname].cost(level);
+							}
+						}
+					}
+				} else {
+					alert('Not enough cash to buy component!');
+				}
+				break;
+			case 'Servers':
+				var item = componentTemplate.motherboard;
+				if (checkCost(componentTemplate.motherboard.cost(level))) { // If cost <= wallet
+					if (typeof facilities[fIndex] === 'undefined' || null) { // If facility not exist
+						alert('No Facility Selected!');
+					} else {
+						hold = cloneObj(serverTemplate);
+						hold.components.motherboard = level;
+						facilities[fIndex].servers.push(hold);
+						stats.wallet -= componentTemplate.motherboard.cost(level);
+					}
+				} else {
+					alert('Not enough cash to buy server!');
+				}
+				break;
+			case 'Facilities':
+	
+				break;
+			case 'Ads':
+	
+				break;
+		}
+	}
 }
 
 function mainSequence() {
@@ -226,7 +227,7 @@ function updateStats() {
 	$('#visitors').text(gameVars.visitors);
 	$('#electricityBill').text(expenses.power.toFixed(2));
 	$('#networkBill').text(expenses.network.toFixed(2));
-	$('#propertyBill').text();
+	// $('#propertyBill').text();
 }
 
 /* --------------------------- Computing Functions --------------------------- */
@@ -271,7 +272,7 @@ function computeVisitors() { // Run though all facilities + servers and gather t
 			}
 			gameVars.visitors += visitors;
 			gameVars.pages += pages;
-			gameVars.income = visitors * pages * 0.00062;
+			gameVars.income = visitors * pages * 0.0008;
 		}
 	}
 }
