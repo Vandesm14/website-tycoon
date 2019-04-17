@@ -1,0 +1,35 @@
+Check Cost -> Check Exist -> Check Dependencies
+
+THEN
+
+Place Component -> Update Wallet -> Update Stats
+
+INE		1			Check if cost <= Wallet
+INE		2			Check if facility exists
+INE		3			Check if server exists
+IF		4			Check if component exists
+	IFT		4a		    Replace component
+	IFF		4b		    Add component
+INE		5			Check dependencies (motherboard has enough ports)
+INE		6			Confirm Purchase
+DO		7			Place Component
+DO    8   	Update wallet
+DO		9			Update stats
+    DO		9.1			Update PCU
+    DO		9.2			Update component specs (visitors/pages/other)
+    DO		9.3			Update servers and facilities
+
+Step: 1			   	Lines: 0 - 0
+Step: 2					Lines: 0 - 0
+Step: 3					Lines: 0 - 0
+Step: 4					Lines: 0 - 0
+    Step: 4a 		Lines: 0 - 0
+    Step: 4b   	Lines: 0 - 0
+Step: 5					Lines: 0 - 0
+Step: 6					Lines: 0 - 0
+Step: 7					Lines: 0 - 0
+Step: 8					Lines: 0 - 0
+Step: 9					Lines: 0 - 0
+	Step: 	9.1		Lines: 0 - 0
+	Step: 	9.2		Lines: 0 - 0
+	Step: 	9.3		Lines: 0 - 0

@@ -20,21 +20,23 @@ var serverTemplate = {
 var componentTemplate = {
 	hdd: {
 		specs: ['1TB', '2TB', '4TB', '8TB'],
-		pcu: 8,
+		pcu: 8, // Level = pcu + (0.25 * pcu * level)
 		maxPages: 10,
 		maxLevels: 4,
 	},
 	cpu: {
 		specs: ['Single Core', 'Dual Core', 'Quad Core', 'Eight Core'],
 		pcu: 16,
-		maxVisitors: 100,
+		maxVisitors: 100, // Level = maxVisitors + (0.25 * maxVisitors * level)
 		maxLevels: 4
 	}
 };
 
 var facilities = [];
 
-var stats = {};
+var stats = {
+	wallet: 500
+};
 
 var gameVars = { // Holding Variables for calculations
 	expenses: {
@@ -93,6 +95,7 @@ $(document).ready(function () {
 
 			switch ($(this).closest('.tab_content').data('tabname')) {
 				case 'Hardware':
+					var item = componentTemplate[rowname];
 					if (selector === undefined) {
 						// selector = $(this).index();
 						// Add new component
@@ -155,6 +158,15 @@ function computeNetwork() {
 }
 
 function computeVisitors() {
+
+}
+
+/* -------- Sub-Computing Functions (Checks) -------- */
+function checkCost(a, b) {
+	return a >= stats.wallet;
+}
+
+function checkExistFacility() {
 
 }
 
