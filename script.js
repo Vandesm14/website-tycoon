@@ -20,22 +20,44 @@ var serverTemplate = {
 var componentTemplate = {
 	hdd: {
 		specs: ['1TB', '2TB', '4TB', '8TB'],
-		pcu: 8, // Level = pcu + (0.25 * pcu * level)
+		// pcu: 8, // Level = pcu + (0.25 * pcu * level)
+		pcu: function (a) {
+			return 8 + 0.25 * 8 * a;
+		},
 		maxPages: 10,
 		maxLevels: 4,
+		// cost: 0 // 10x^2 + 30
+		cost: function (a) {
+			return 10 * Math.pow(a, 2) + 30;
+		}
 	},
 	cpu: {
 		specs: ['Single Core', 'Dual Core', 'Quad Core', 'Eight Core'],
 		pcu: 16,
 		maxVisitors: 100, // Level = maxVisitors + (0.25 * maxVisitors * level)
-		maxLevels: 4
+		maxLevels: 4,
+		cost: 0 // // 10x^2 + 100
 	}
 };
 
-var facilities = [];
+// var facilities = [];
+
+var facilities = [{
+	servers: [{
+		components: {
+			cpu: 1
+		},
+		pages: 1
+	}],
+	expenses: {
+		power: 0,
+		network: 0,
+		property: 0
+	}
+}];
 
 var stats = {
-	wallet: 500
+	wallet: 500 // post to website
 };
 
 var gameVars = { // Holding Variables for calculations
@@ -85,10 +107,11 @@ $(document).ready(function () {
 	/* -------- Custom Store -------- */
 	$('.item_row_content').on('click', function () {
 		if (!$(this).hasClass('disabled')) {
-			var fIndex = $('#facilitySelector').val(); // Facility Index
-			var sIndex = $('#serverSelector').val(); // Server Index
+			var fIndex = parseInt($('#facilitySelector').val()) - 1; // Facility Index
+			var sIndex = parseInt($('#serverSelector').val()) - 1; // Server Index
 			var rowname = $(this).closest('.item_row').data('rowname').toLowerCase();
 			var selector = facilities[fIndex].servers[sIndex][rowname];
+			var level = $(this).index();
 			// console.log('Tab: ' + $(this).closest('.tab_content').data('tabname'));
 			// console.log('Row: ' + $(this).closest('.item_row').data('rowname'));
 			// console.log('Level: ' + ($(this).index() + 1));
@@ -98,7 +121,13 @@ $(document).ready(function () {
 					var item = componentTemplate[rowname];
 					if (selector === undefined) {
 						// selector = $(this).index();
-						// Add new component
+						if (checkCost(componentTemplate[rowname].cost(level))) {
+							// Continue On
+							
+						} else {
+							alert('Not enough cash to buy component!');
+						}
+						console.log(componentTemplate[rowname].cost(level));
 					} else {
 						confirmAsync(`Replace ${rowname} in Server ${sIndex} of Facility ${fIndex}?`, function () {
 							// selector = $(this).index();
@@ -162,8 +191,8 @@ function computeVisitors() {
 }
 
 /* -------- Sub-Computing Functions (Checks) -------- */
-function checkCost(a, b) {
-	return a >= stats.wallet;
+function checkCost(a) {
+	return stats.wallet - a >= 0;
 }
 
 function checkExistFacility() {
