@@ -131,7 +131,7 @@ function clickRowContent(e) {
 		var selector = facilities[fIndex].servers[sIndex].components[rowname];
 		var level = $(e).index();
 		var hold;
-	
+
 		switch ($(e).closest('.tab_content').data('tabname')) {
 			case 'Hardware':
 				var item = componentTemplate[rowname];
@@ -144,12 +144,24 @@ function clickRowContent(e) {
 						} else {
 							if (facilities[fIndex].servers[sIndex][rowname] !== 'undefined' || null) { // If component not exist
 								confirmAsync(`Replace ${rowname} in Server ${sIndex + 1} of Facility ${fIndex + 1}?`, function () {
-									facilities[fIndex].servers[sIndex].components[rowname] = level;
 									stats.wallet -= componentTemplate[rowname].cost(level);
+									facilities[fIndex].servers[sIndex].status = 1;
+
+									alert(`Upgrade in progress. Server will be back up in ${level * 5} seconds`);
+									setTimeout(function () {
+										facilities[fIndex].servers[sIndex].components[rowname] = level;
+										facilities[fIndex].servers[sIndex].status = 2;
+									}, (level * 5000));
 								});
 							} else {
-								facilities[fIndex].servers[sIndex].components[rowname] = level;
 								stats.wallet -= componentTemplate[rowname].cost(level);
+								facilities[fIndex].servers[sIndex].status = 1;
+
+								alert(`Upgrade in progress. Server will be back up in ${level * 5} seconds`);
+								setTimeout(function () {
+									facilities[fIndex].servers[sIndex].components[rowname] = level;
+									facilities[fIndex].servers[sIndex].status = 2;
+								}, (level * 5000));
 							}
 						}
 					}
@@ -173,16 +185,20 @@ function clickRowContent(e) {
 				}
 				break;
 			case 'Facilities':
-	
+
 				break;
 			case 'Ads':
-	
+
 				break;
 		}
 	}
 }
 
 function mainSequence() {
+	if (stats.wallet < 0) {
+		clearInterval(game);
+		alert('You went Bankrupt!');
+	}
 	computePCU();
 	computeNetwork();
 	computeVisitors();
@@ -195,7 +211,7 @@ function mainSequence() {
 }
 
 startSequence();
-setInterval(mainSequence, 1000);
+game = setInterval(mainSequence, 1000);
 
 /* --------------------------- DOM Functions --------------------------- */
 function updateServerList() {
@@ -205,6 +221,7 @@ function updateServerList() {
 		hold = facilities[0].servers[i];
 		elem = $(`.site_box:eq(${i})`);
 		elem.attr('class', 'site_box ' + gameVars.siteStats[hold.status]);
+
 		if (typeof hold.components.hdd === 'undefined' || null) {
 			elem.find('.site_box_stats .site_box_component:eq(0)').text('HDD: None');
 		} else {
@@ -262,16 +279,18 @@ function computeVisitors() { // Run though all facilities + servers and gather t
 	var visitors = 0;
 	for (var i in facilities) { // Facilities
 		for (var j in facilities[i].servers) { // Servers
-			for (var k in facilities[i].servers[j].components) { // Components
-				hold = facilities[i].servers[j].components;
-				if (k === 'hdd' || k === 'ssd') {
-					pages += componentTemplate.hdd.pages(hold[k]);
-				} else if (k === 'cpu') {
-					visitors += componentTemplate.cpu.visitors(hold[k]);
+			if (facilities[i].servers[j].status === 2) {
+				for (var k in facilities[i].servers[j].components) { // Components
+					hold = facilities[i].servers[j].components;
+					if (k === 'hdd' || k === 'ssd') {
+						pages += componentTemplate.hdd.pages(hold[k]);
+					} else if (k === 'cpu') {
+						visitors += componentTemplate.cpu.visitors(hold[k]);
+					}
 				}
+				gameVars.visitors += visitors;
+				gameVars.pages += pages;
 			}
-			gameVars.visitors += visitors;
-			gameVars.pages += pages;
 			gameVars.income = visitors * pages * 0.0008;
 		}
 	}
