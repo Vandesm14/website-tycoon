@@ -241,7 +241,7 @@ function updateServerList() {
 function updateStats() {
 	$('#wallet').text(stats.wallet.toFixed(2));
 	$('#income').text(gameVars.income.toFixed(2));
-	$('#visitors').text(gameVars.visitors);
+	$('#visitors').text(gameVars.visitors + gameVars.pages);
 	$('#electricityBill').text(expenses.power.toFixed(2));
 	$('#networkBill').text(expenses.network.toFixed(2));
 	// $('#propertyBill').text();
