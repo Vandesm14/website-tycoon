@@ -98,9 +98,9 @@ body {
 	color: white;
 }
 
-.site_box * {
+/* .site_box * {
 	padding: 10px;
-}
+} */
 
 .site_box_content {
 	margin: auto auto;
@@ -109,7 +109,7 @@ body {
 .site_box_title {
 	margin: auto auto;
 	font-weight: 900;
-
+	padding: 10px;
 	grid-area: title;
 }
 
@@ -118,6 +118,11 @@ body {
 	height: 0;
 	opacity: 0;
 	transition: 200ms ease-out;
+}
+
+.site_box_component, .site_box_power, .site_box_visitors, .site_box_pages {
+	margin: 0px auto;
+	padding: 0px auto;
 }
 
 .site_box:hover {
@@ -231,6 +236,10 @@ body {
 
 #electricityBill::before {
 	content: 'Electricity Bill: $';
+}
+
+#electricityBill::after {
+	content: '/hr';
 }
 
 #networkBill::before {
