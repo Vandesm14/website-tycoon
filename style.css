@@ -48,6 +48,14 @@ body {
 	content: 'Wallet: $';
 }
 
+#income::before {
+	content: 'Income: $';
+}
+
+#visitors::before {
+	content: 'Visitors: ';
+}
+
 /* .storage-graph {
 	margin: 0 auto;
 	width: 90%;
@@ -116,13 +124,17 @@ body {
 .site_box_stats {
 	padding-top: 4px;
 	height: 0;
-	opacity: 0;
+	/* opacity: 0; */
 	transition: 200ms ease-out;
 }
 
-.site_box_component, .site_box_power, .site_box_visitors, .site_box_pages {
+.site_box_stats * {
 	margin: 0px auto;
 	padding: 0px auto;
+}
+
+.site_box_power::before {
+	content: 'PCU: ';
 }
 
 .site_box:hover {
@@ -239,13 +251,21 @@ body {
 }
 
 #electricityBill::after {
-	content: '/hr';
+	content: '/s';
 }
 
 #networkBill::before {
 	content: 'Network Bill: $';
 }
 
+#networkBill::after {
+	content: '/s';
+}
+
 #propertyBill::before {
 	content: 'Property Bill: $';
+}
+
+#propertyBill::after {
+	content: '/s';
 }

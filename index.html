@@ -9,10 +9,13 @@
 </head>
 
 <body>
+	<audio id="music" src="loop.mp3" loop autoplay volume="0.1"></audio>
 	<div class="ui_container">
 		<div class="ui_box">
 			<div class="stats">
 				<p id="wallet">0</p>
+				<p id="income">0</p>
+				<p id="visitors">0</p>
 				<!-- <img src="images/storage-graph.png" class="storage-graph"> -->
 			</div>
 			<div class="sitemap">
@@ -31,65 +34,91 @@
 					<div class="site_box off">
 						<div class="site_box_title">Server 2</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 3</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
-					<!-- Line Break -->
 					<div class="site_box off">
 						<div class="site_box_title">Server 4</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 5</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 6</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 7</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 8</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 9</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 					<div class="site_box off">
 						<div class="site_box_title">Server 10</div>
 						<div class="site_box_stats">
-							Storage: 4TB<br>
-							Power: 150kWh
+							<p class="site_box_component"></p>
+							<p class="site_box_component"></p>
+							<p class="site_box_power"></p>
+							<p class="site_box_visitors"></p>
+							<p class="site_box_pages"></p>
 						</div>
 					</div>
 				</div>
@@ -97,13 +126,24 @@
 			<div class="store">
 				Store
 				<div>
+					Facility:
 					<select class="store_selector" id="facilitySelector">
 						<option disabled>Select a Facility</option>
 						<option selected>1</option>
 					</select>
+					Server:
 					<select class="store_selector" id="serverSelector">
 						<option disabled>Select a Server</option>
 						<option selected>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
 					</select>
 				</div>
 				<div class="tabs_container">

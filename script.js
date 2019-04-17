@@ -13,8 +13,8 @@ var facilityTemplate = {
 
 var serverTemplate = {
 	components: {},
-	motherboard: 1,
-	status: 2
+	status: 2,
+	power: 0
 };
 
 var componentTemplate = {
@@ -42,7 +42,7 @@ var componentTemplate = {
 		},
 		// maxVisitors: 100, // Level = maxVisitors + (0.25 * maxVisitors * level)
 		visitors: function (a) {
-			return 100 + 0.25 * 100 * a;
+			return 100 + 0.50 * 100 * a;
 		},
 		maxLevels: 4,
 		// cost: 0 // // 10x^2 + 100
@@ -55,10 +55,6 @@ var componentTemplate = {
 		// pcu: 16,
 		pcu: function (a) {
 			return 10 + 0.25 * 10 * a;
-		},
-		// maxVisitors: 100, // Level = maxVisitors + (0.25 * maxVisitors * level)
-		visitors: function (a) {
-			return 100 + 0.25 * 100 * a;
 		},
 		maxLevels: 4,
 		// cost: 0 // // 10x^2 + 100
@@ -75,12 +71,13 @@ var facilities = [{
 			cpu: 0,
 			motherboard: 0
 		},
-		status: 2
+		status: 2,
+		power: 0
 	}],
 }];
 
 var stats = {
-	wallet: 500 // post to website
+	wallet: 70 // post to website
 };
 
 var gameVars = { // Holding Variables for calculations
@@ -90,23 +87,9 @@ var gameVars = { // Holding Variables for calculations
 	visitors: 0,
 	pages: 0,
 	ads: 0,
-	siteStats: ['off', 'down', 'up']
+	siteStats: ['off', 'down', 'up'],
+	income: 0
 };
-
-// var facilities = [{
-// 	servers: [{
-// 		components: {
-// 			hdd: 1,
-// 			cpu: 1
-// 		},
-// 		pages: 1
-// 	}],
-// 	expenses: {
-// 		power: 0,
-// 		network: 0,
-// 		property: 0
-// 	}
-// }];
 
 var expenses = { // Conversions for $$ per day
 	property: 0,
@@ -117,6 +100,7 @@ var expenses = { // Conversions for $$ per day
 /* --------------------------- JQuery Liteners --------------------------- */
 /* -------- Custom Tabs -------- */
 $(document).ready(function () {
+	document.getElementById('music').volume = 0.7;
 	var x = $('.tab_title[data-tabfirst]');
 	$('.tab', x).toggleClass('active', true);
 	$('.tab_box .tab_content[data-tabid="' + $(x).data('tabidp') + '"]').show();
@@ -134,8 +118,9 @@ $(document).ready(function () {
 			var fIndex = parseInt($('#facilitySelector').val()) - 1; // Facility Index
 			var sIndex = parseInt($('#serverSelector').val()) - 1; // Server Index
 			var rowname = $(this).closest('.item_row').data('rowname').toLowerCase();
-			var selector = facilities[fIndex].servers[sIndex][rowname];
+			var selector = facilities[fIndex].servers[sIndex].components[rowname];
 			var level = $(this).index();
+			var hold;
 			// console.log('Tab: ' + $(this).closest('.tab_content').data('tabname'));
 			// console.log('Row: ' + $(this).closest('.item_row').data('rowname'));
 			// console.log('Level: ' + ($(this).index() + 1));
@@ -151,11 +136,14 @@ $(document).ready(function () {
 								alert('No Servers Attached to Facility!');
 							} else {
 								if (facilities[fIndex].servers[sIndex][rowname] !== 'undefined' || null) { // If component not exist
-									confirmAsync(`Replace ${rowname} in Server ${sIndex + 1} of Facility ${fIndex + 1}?`, function () {});
+									confirmAsync(`Replace ${rowname} in Server ${sIndex + 1} of Facility ${fIndex + 1}?`, function () {
+										facilities[fIndex].servers[sIndex].components[rowname] = level;
+										stats.wallet -= componentTemplate[rowname].cost(level);
+									});
+								} else {
+									facilities[fIndex].servers[sIndex].components[rowname] = level;
+									stats.wallet -= componentTemplate[rowname].cost(level);
 								}
-								selector = level;
-								console.log(selector);
-								stats.wallet -= componentTemplate[rowname].cost(level);
 							}
 						}
 					} else {
@@ -163,7 +151,19 @@ $(document).ready(function () {
 					}
 					break;
 				case 'Servers':
-
+					var item = componentTemplate.motherboard;
+					if (checkCost(componentTemplate.motherboard.cost(level))) { // If cost <= wallet
+						if (typeof facilities[fIndex] === 'undefined' || null) { // If facility not exist
+							alert('No Facility Selected!');
+						} else {
+							hold = cloneObj(serverTemplate);
+							hold.components.motherboard = level;
+							facilities[fIndex].servers.push(hold);
+							stats.wallet -= componentTemplate.motherboard.cost(level);
+						}
+					} else {
+						alert('Not enough cash to buy server!');
+					}
 					break;
 				case 'Facilities':
 
@@ -182,13 +182,15 @@ function startSequence() {
 }
 
 function mainSequence() {
-	computePower();
+	computePCU();
 	computeNetwork();
-	// computeVisitors();
-	stats.wallet -= expenses.power / 12;
-	stats.wallet -= expenses.network / 12;
+	computeVisitors();
+	stats.wallet -= expenses.power;
+	stats.wallet -= expenses.network;
+	stats.wallet += gameVars.income;
 	// stats.wallet -= expenses.property*12;
 	updateStats();
+	updateServerList();
 }
 
 startSequence();
@@ -200,54 +202,76 @@ function updateServerList() {
 	var elem;
 	for (var i in facilities[0].servers) {
 		hold = facilities[0].servers[i];
-		elem = $('.site_box:eq(' + i + ')');
+		elem = $(`.site_box:eq(${i})`);
 		elem.attr('class', 'site_box ' + gameVars.siteStats[hold.status]);
-		if (typeof hold.hdd === 'undefined' || null) {
-			elem.children('site_box_stats site_box_component:eq(0)').text('HDD: None');
+		if (typeof hold.components.hdd === 'undefined' || null) {
+			elem.find('.site_box_stats .site_box_component:eq(0)').text('HDD: None');
 		} else {
-			elem.children('site_box_stats site_box_component:eq(0)').text('HDD: ' + componentTemplate.hdd.specs[hold.hdd]);
+			elem.find('.site_box_stats .site_box_component:eq(0)').text('HDD: ' + componentTemplate.hdd.specs[hold.components.hdd]);
 		}
+		if (typeof hold.components.cpu === 'undefined' || null) {
+			elem.find('.site_box_stats .site_box_component:eq(1)').text('CPU: None');
+		} else {
+			elem.find('.site_box_stats .site_box_component:eq(1)').text('CPU: ' + componentTemplate.cpu.specs[hold.components.cpu]);
+		}
+
+		elem.find('.site_box_stats .site_box_power').text(facilities[0].servers[i].power);
+		// elem.find('.site_box_stats .site_box_power').text(facilities[0].servers[i].power);
 	}
 }
 
 function updateStats() {
 	$('#wallet').text(stats.wallet.toFixed(2));
+	$('#income').text(gameVars.income.toFixed(2));
+	$('#visitors').text(gameVars.visitors);
 	$('#electricityBill').text(expenses.power.toFixed(2));
-	$('#networkBill').text();
+	$('#networkBill').text(expenses.network.toFixed(2));
 	$('#propertyBill').text();
 }
 
 /* --------------------------- Computing Functions --------------------------- */
-function computePower() {
+function computePCU() {
 	// Run though all facilities + servers and gather total power expense
 	gameVars.expenses.pcu = 0;
 	var hold;
+	var iPower;
 	for (var i in facilities) { // Facilities
 		for (var j in facilities[i].servers) { // Servers
+			iPower = 0;
 			for (var k in facilities[i].servers[j].components) { // Components
 				hold = facilities[i].servers[j].components;
-				gameVars.expenses.pcu += componentTemplate[k].pcu(hold[k]);
+				iPower += componentTemplate[k].pcu(hold[k]);
 			}
+			facilities[i].servers[j].power = iPower;
+			gameVars.expenses.pcu += iPower;
 		}
 	}
-	expenses.power = gameVars.expenses.pcu * 0.114;
+	expenses.power = gameVars.expenses.pcu * 0.0114;
 }
 
 function computeNetwork() {
-
+	expenses.network = gameVars.visitors * 0.0022;
 }
 
 function computeVisitors() { // Run though all facilities + servers and gather total power expense
-	gameVars.expenses.pcu = 0;
+	gameVars.visitors = 0;
+	gameVars.pages = 0;
 	var hold;
+	var pages = 0;
+	var visitors = 0;
 	for (var i in facilities) { // Facilities
 		for (var j in facilities[i].servers) { // Servers
 			for (var k in facilities[i].servers[j].components) { // Components
 				hold = facilities[i].servers[j].components;
 				if (k === 'hdd' || k === 'ssd') {
-					gameVars.pcu += componentTemplate[k].pcu(hold[k]);
+					pages += componentTemplate.hdd.pages(hold[k]);
+				} else if (k === 'cpu') {
+					visitors += componentTemplate.cpu.visitors(hold[k]);
 				}
 			}
+			gameVars.visitors += visitors;
+			gameVars.pages += pages;
+			gameVars.income = visitors * pages * 0.00062;
 		}
 	}
 }
@@ -255,7 +279,7 @@ function computeVisitors() { // Run though all facilities + servers and gather t
 /* -------- Sub-Computing Functions (Checks) -------- */
 function checkCost(a) {
 	// return stats.wallet - a >= 0;
-	return a <= stats.wallet;
+	return a < stats.wallet;
 }
 
 function checkExistFacility() {
