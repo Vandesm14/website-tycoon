@@ -34,6 +34,22 @@ var componentTemplate = {
 			return 20 * Math.pow(a, 2) + 50;
 		}
 	},
+	ssd: {
+		specs: ['1TB', '2TB', '4TB', '8TB'],
+		// pcu: 8, // Level = pcu + (0.25 * pcu * level)
+		pcu: function (a) {
+			return 8 + 0.25 * 8 * a;
+		},
+		// maxPages: 10,
+		pages: function (a) {
+			return 20 + 0.50 * 20 * a;
+		},
+		maxLevels: 4,
+		// cost: 0 // 10x^2 + 30
+		cost: function (a) {
+			return 20 * Math.pow(a, 2) + 100;
+		}
+	},
 	cpu: {
 		specs: ['Single Core', 'Dual Core', 'Quad Core', 'Eight Core'],
 		// pcu: 16,
@@ -268,7 +284,7 @@ function computePCU() {
 }
 
 function computeNetwork() {
-	expenses.network = gameVars.visitors * 0.0022;
+	expenses.network = gameVars.visitors * 0.002;
 }
 
 function computeVisitors() { // Run though all facilities + servers and gather total power expense
